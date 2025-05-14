@@ -1,0 +1,28 @@
+DeLotGame playing instructions (complete formula version): 
+DeLotGame is an ethereum-based prediction game, where players pledge ETH to obtain game tokens DLT and participate in data guessing. The specific gameplay is as follows: When players send ETH to the contract, the system will automatically mint DLT tokens in proportion to the current pool (1:1 for the first time, and then calculated according to the formula (deposited ETH × total DLT supply) ÷ contract ETH balance). To participate in the game, players need to send ETH transactions with hexadecimal data (e.g., 0x1A3F, up to 16 bytes), which will be standardized by the contract into a lowercase string (e.g., "1a3f") and record the betting information.
+Core Reward Mechanism: 
+Each time a bet is placed, the system will check if the player's last bet was a winner: 
+Calculate the target block number: last bet block number + (10 - last bet block number % 10) 
+Obtain the last hexadecimal character of the block's hash via EIP-2935 
+If this character is present in the data of the last bet, the reward is paid out according to the full formula: 
+Reward ETH = (last bet ETH × 16 × 9) ÷ (length of the data) 9) ÷ (data length × 10) 
+(Example: last bet 1ETH, data length 4, then the reward = (1 × 16 × 9)/(4 × 10) = 3.6ETH) 
+Players can redeem ETH at any time through the redeem() function or directly transfer DLT to the contract to redeem the ETH, the amount of redemption is calculated by (the number of destroyed DLT × the contract's ETH balance) ÷ total DLT supply. The contract adopts anti-re-entry protection and ensures fairness through block hash verification, but note that the reward results are affected by the randomness of block data.
+
+Translated with DeepL.com (free version)
+DeLotGame 玩法说明（完整公式版）：
+
+DeLotGame 是一款基于以太坊的预测类游戏，玩家通过质押 ETH 获取游戏代币 DLT 并参与数据竞猜。具体玩法如下：当玩家向合约发送 ETH 时，系统会自动按当前资金池比例铸造 DLT 代币（首次1:1，后续按公式(存入ETH × 总DLT供应量) ÷ 合约ETH余额计算）。参与游戏时，玩家需发送附带十六进制数据（如0x1A3F，最长16字节）的ETH交易，合约会将其标准化为小写字符串（如"1a3f"）并记录投注信息。
+
+核心奖励机制：
+每次投注时，系统会检查玩家上次投注是否中奖：
+
+计算目标区块号：上次投注区块号 + (10 - 上次投注区块号 % 10)
+
+通过EIP-2935获取该区块哈希的末位十六进制字符
+
+若该字符出现在上次投注数据中，则按完整公式发放奖励：
+奖励ETH = (上次投注ETH × 16 × 9) ÷ (数据长度 × 10)
+（示例：上次投注1ETH，数据长度4，则奖励 = (1×16×9)/(4×10) = 3.6ETH）
+
+玩家可随时通过redeem()函数或直接转账DLT至合约来赎回ETH，赎回量按(销毁DLT数量 × 合约ETH余额) ÷ 总DLT供应量计算。合约采用防重入保护，并通过区块哈希验证确保公平性，但需注意奖励结果受区块数据随机性影响。
